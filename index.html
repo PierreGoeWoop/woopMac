@@ -1,13 +1,178 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mac-woop</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎰 Tombola Revente Macs</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+    <div class="tombola-app">
+        <header class="header">
+            <h1>🎰 Tombola Revente Macs</h1>
+            <p>Application de tirage au sort pour les Macs</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Section Import CSV -->
+            <section class="import-section">
+                <h2>📁 Import des Macs et participants</h2>
+                <div class="file-upload">
+                    <input
+                        id="fileInput"
+                        type="file"
+                        accept=".csv"
+                        class="file-input"
+                    />
+                    <button onclick="triggerFileUpload()" class="btn btn-primary">
+                        Importer le fichier CSV
+                    </button>
+                </div>
+                <p class="file-info" id="fileName" style="display: none;">
+                    Fichier sélectionné: <strong id="fileNameText"></strong>
+                </p>
+                <div id="importSummary" class="import-summary" style="display: none;">
+                    <p id="importSummaryText">
+                        ✅ 0 Macs importés avec 0 participants uniques
+                    </p>
+                </div>
+            </section>
+
+            <!-- Section Participants actifs -->
+            <section class="participants-section" id="participantsSection" style="display: none;">
+                <div class="section-header">
+                    <h2 id="participantsTitle">👥 Participants actifs (0)</h2>
+                    <div class="filter-controls">
+                        <label for="nb-participants">Afficher :</label>
+                        <select id="nb-participants" class="filter-select">
+                            <option value="5">5 participants</option>
+                            <option value="10" selected>10 participants</option>
+                            <option value="20">20 participants</option>
+                            <option value="50">50 participants</option>
+                            <option value="all">Tous</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="participants-table">
+                        <thead>
+                            <tr>
+                                <th>Participant</th>
+                                <th>Macs présélectionnés</th>
+                                <th>Macs encore disponibles</th>
+                            </tr>
+                        </thead>
+                        <tbody id="participantsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Info plus de participants -->
+                <div id="moreParticipantsInfo" class="more-info" style="display: none;">
+                </div>
+            </section>
+
+            <!-- Section Macs disponibles -->
+            <section class="macs-overview-section" id="macsSection" style="display: none;">
+                <div class="section-header">
+                    <h2 id="macsTitle">💻 Macs disponibles (0)</h2>
+                    <div class="filter-controls">
+                        <label for="nb-macs">Afficher :</label>
+                        <select id="nb-macs" class="filter-select">
+                            <option value="6">6 Macs</option>
+                            <option value="12" selected>12 Macs</option>
+                            <option value="24">24 Macs</option>
+                            <option value="50">50 Macs</option>
+                            <option value="all">Tous</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="macs-grid" id="macsGrid">
+                </div>
+
+                <!-- Info plus de Macs -->
+                <div id="moreMacsInfo" class="more-info" style="display: none;">
+                </div>
+            </section>
+
+            <!-- Section Tirage Global -->
+            <section class="tirage-section" id="tirageSection" style="display: none;">
+                <h2>🎲 Tirage au sort des participants</h2>
+                <p>Tire au hasard un participant parmi tous ceux encore actifs</p>
+                <div class="tirage-stats" id="tirageStats">
+                    <p><strong id="participantsActifsCount">0</strong> participants actifs</p>
+                    <p><strong id="macsDisponiblesCount">0</strong> Macs encore disponibles</p>
+                </div>
+                <button onclick="tirerGlobal()" class="btn btn-success btn-large" id="tirageButton">
+                    🎯 Tirer un participant au sort
+                </button>
+            </section>
+
+            <!-- Section Choix du Mac par le participant tiré -->
+            <section class="choix-section" id="choixSection" style="display: none;">
+                <h2 id="participantTireNom">🏆 Participant tiré: </h2>
+                <p>Choisissez un Mac parmi ceux que vous aviez présélectionnés :</p>
+                <div class="choix-macs" id="choixMacs">
+                </div>
+            </section>
+
+            <!-- Message si participant tiré n'a plus de Mac disponible -->
+            <section class="no-choice-section" id="noChoiceSection" style="display: none;">
+                <h2>😞 Aucun Mac disponible</h2>
+                <p id="noChoiceMessage">
+                    Participant, tous vos Macs présélectionnés ont déjà été pris.
+                </p>
+                <p>Vous êtes éliminé de la tombola.</p>
+                <button onclick="continuerTirage()" class="btn btn-secondary">
+                    Continuer le tirage
+                </button>
+            </section>
+
+            <!-- Résultat du dernier gagnant -->
+            <section class="dernier-gagnant-section" id="dernierGagnantSection" style="display: none;">
+                <h3>🏆 Dernier gagnant</h3>
+                <div class="gagnant-card" id="dernierGagnantCard">
+                </div>
+            </section>
+
+            <!-- Section Historique -->
+            <section class="historique-section" id="historiqueSection" style="display: none;">
+                <h2 id="historiqueTitle">📜 Historique des gagnants (0)</h2>
+                <div class="table-container">
+                    <table class="historique-table">
+                        <thead>
+                            <tr>
+                                <th>Gagnant</th>
+                                <th>Mac gagné</th>
+                                <th>Prix</th>
+                                <th>Date/Heure</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historiqueTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Message si aucun Mac -->
+            <section class="empty-state" id="emptyState">
+                <p>📥 Importez le fichier CSV des Macs pour commencer</p>
+                <p class="format-info">
+                    Le fichier doit contenir les colonnes: Modèle, Numéro de série, État, Prix €, Tirage au sort
+                </p>
+            </section>
+
+            <!-- Message si tous les Macs ont été tirés -->
+            <section class="finished-state" id="finishedState" style="display: none;">
+                <h2>🎉 Tous les Macs ont été attribués !</h2>
+                <p>Consultez l'historique pour voir tous les gagnants.</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
 </html>

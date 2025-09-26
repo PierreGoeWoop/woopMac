@@ -1,0 +1,510 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f7fa;
+    line-height: 1.6;
+}
+
+.tombola-app {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 12px;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.header p {
+    margin: 10px 0 0 0;
+    opacity: 0.9;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e5e9;
+}
+
+section h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 1.4rem;
+}
+
+/* Section headers avec filtres */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.filter-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-controls label {
+    font-weight: 500;
+    color: #555;
+}
+
+.filter-select {
+    padding: 6px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Info "plus d'éléments" */
+.more-info {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    margin-top: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+/* Import Section */
+.file-upload {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-info {
+    color: #666;
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.import-summary {
+    background: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+/* Boutons */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    text-align: center;
+    display: inline-block;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.btn-large {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-info {
+    background: #17a2b8;
+    color: white;
+}
+
+/* Tableaux */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: top;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Participants et Macs */
+.macs-list {
+    max-width: 400px;
+}
+
+.mac-badge {
+    display: inline-block;
+    background: #e8f5e8;
+    color: #2d5a2d;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    margin: 2px;
+    border: 1px solid #c3e6c3;
+}
+
+.mac-badge.mac-indisponible {
+    background: #ffebee;
+    color: #c62828;
+    border-color: #ffcdd2;
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.macs-count {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: 500;
+}
+
+/* Grille des Macs */
+.macs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.mac-card {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+
+.mac-card h4 {
+    margin: 0 0 8px 0;
+    color: #2c3e50;
+    font-size: 1rem;
+}
+
+.mac-card p {
+    margin: 4px 0;
+    font-size: 0.9rem;
+}
+
+.participants-count-small {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 8px;
+}
+
+/* Détails des participants par Mac */
+.participants-details {
+    margin-top: 15px;
+    padding: 15px;
+    background: #f1f3f4;
+    border-radius: 6px;
+    border-left: 4px solid #17a2b8;
+}
+
+.participants-details h5 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.participants-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.participant-item {
+    padding: 6px 10px;
+    margin: 3px 0;
+    background: #e8f5e8;
+    border-radius: 4px;
+    border-left: 3px solid #27ae60;
+    font-size: 0.85rem;
+    color: #2d5a2d;
+}
+
+.no-participants {
+    color: #666;
+    font-style: italic;
+    margin: 10px 0 0 0;
+    font-size: 0.85rem;
+}
+
+/* Section tirage */
+.tirage-section {
+    text-align: center;
+}
+
+.tirage-stats {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.tirage-stats p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* Section choix */
+.choix-section {
+    background: #fff3cd;
+    border-color: #ffeaa7;
+}
+
+.choix-section h2 {
+    color: #856404;
+}
+
+.choix-macs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.mac-choix-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid #ffc107;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mac-choix-card h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+}
+
+.mac-choix-card p {
+    margin: 5px 0;
+}
+
+.mac-choix-card button {
+    margin-top: 15px;
+    width: 100%;
+}
+
+/* Section aucun choix */
+.no-choice-section {
+    background: #f8d7da;
+    border-color: #f5c6cb;
+    text-align: center;
+}
+
+.no-choice-section h2 {
+    color: #721c24;
+}
+
+/* Section dernier gagnant */
+.dernier-gagnant-section {
+    background: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.dernier-gagnant-section h3 {
+    margin-top: 0;
+    color: #155724;
+}
+
+.gagnant-card {
+    text-align: left;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.gagnant-card p {
+    margin: 8px 0;
+}
+
+.mac-gagne {
+    color: #27ae60;
+    font-size: 1.1rem;
+}
+
+.mac-details {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.choix-info {
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-style: italic;
+}
+
+/* États vides */
+.empty-state,
+.finished-state {
+    text-align: center;
+    color: #666;
+    padding: 40px;
+}
+
+.format-info {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 10px;
+}
+
+.finished-state {
+    background: #d4edda;
+    color: #155724;
+}
+
+.finished-state h2 {
+    color: #155724;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tombola-app {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 2rem;
+    }
+
+    section {
+        padding: 20px;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-controls {
+        justify-content: center;
+    }
+
+    .file-upload {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    table {
+        font-size: 0.9rem;
+    }
+
+    th,
+    td {
+        padding: 8px;
+    }
+
+    .macs-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tirage-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .choix-macs {
+        grid-template-columns: 1fr;
+    }
+}
